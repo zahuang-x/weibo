@@ -17,7 +17,7 @@ class SessionsController extends Controller
             'email' =>  'required|email|max:255',
             'password' =>   'required'
         ]);
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($credentials,$request->has('rememberme'))){
             session()->flash('success','お帰りなさい');
             return redirect()->route('users.show',[Auth::user()]);
         }else{
@@ -28,7 +28,7 @@ class SessionsController extends Controller
 
     public function destroy(){
         Auth::logout();
-        session()->flash('success','ログインしてください');
+        session()->flash('success','ログアウトしました');
         return redirect('login');
     }
 }
