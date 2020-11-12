@@ -32,4 +32,24 @@ class UsersController extends Controller
         session()->flash('success','Laravelの世界へようこそ');
         return redirect()->route('users.show',[$user]);
     }
+
+    public function edit(User $user){
+        return view('users.eidt',compact('user'));
+    }
+
+    public function update(User $user,Request $request){
+        $this->validate($request,[
+            'name' => 'required|max:50',
+            'password' => 'nullable|confirmed|min:6'
+        ]);
+        $data = [];
+        $data['name'] = $request->name;
+        if($request->password){
+            $data['password'] = bcrypt($request->name);
+        }
+        $user->update($data);
+        session()->flash('success','個人情報の更新は完了です');
+        return redirect()->route('users.show',$user);
+
+    }
 }
