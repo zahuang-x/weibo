@@ -61,11 +61,18 @@ class UsersController extends Controller
         $data = [];
         $data['name'] = $request->name;
         if($request->password){
-            $data['password'] = bcrypt($request->name);
+            $data['password'] = bcrypt($request->password);
         }
         $user->update($data);
         session()->flash('success','個人情報の更新は完了です');
         return redirect()->route('users.show',$user);
 
+    }
+
+    public function destroy(User $user){
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success','削除しました');
+        return back();
     }
 }
